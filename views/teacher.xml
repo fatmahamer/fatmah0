@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    
+        <record id="teacher_tree" model="ir.ui.view">
+            <field name="name">school.teacher.tree</field>
+            <field name="model">school.teacher</field>
+            <field name="arch" type="xml">
+                <tree>
+                           <field name="name"/> 
+                           <field name="age"/>
+                           <field name="gender"/>
+                           <field name="note"/>
+                  
+                      
+                </tree>
+            </field>
+        </record>
+
+        <record id="teacher_form" model="ir.ui.view">
+            <field name="name">school.teacher.form</field>
+            <field name="model">school.teacher</field>
+            <field name="arch" type="xml">
+                <form>
+                    
+
+                    <sheet>
+                       <div class="oe_title"> 
+                        <lable>
+                            <h1>Profile </h1>
+                        </lable>
+                        </div>
+<!--                            <div class="oe_title"> 
+                            <h2>             
+                                <field name="reference" radonly="1"/>
+                           </h2>
+                        </div> -->
+                        
+                    <group>
+                        <group> 
+                    <field name="name"/>
+                   <field name="student_name"/>
+
+                        </group>
+                       
+                          <group> 
+                              <field name="age"/>
+                      </group>
+                           <group> 
+                               <field name="gender" invisible="context.get('hinde_gende')"/>
+                      </group>
+                        <group>
+                           <field name="note"/>
+                        </group>
+                        <notebook>
+                            <page string="Homework">
+                                <field name="homework"/>
+
+                            </page>
+                       </notebook>
+
+                        </group>
+                    </sheet>
+                    
+                    
+                    
+ 
+                </form>
+            </field>
+        </record>
+
+    
+    
+    
+    
+    
+          <record id="Teacher_action" model="ir.actions.act_window">
+            <field name="name">Teacher</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">school.teacher</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{}</field>
+              
+          
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a new teacher?
+                </p>
+            </field>
+        </record>
+
+    
+    
+    
+        <!-- Top menu item -->
+    
+    
+        <menuitem id="school_root"
+            name="School"
+            sequence="10"/>
+
+        <menuitem id="school_teacher_root"
+            name="Teacher"
+            parent="school_root"
+            action="Teacher_action"
+            sequence="10"/>
+    
+ 
+</odoo>

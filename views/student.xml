@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+            <record id="student_kanban" model="ir.ui.view">
+            <field name="name">school.student.kanban</field>
+            <field name="model">school.student</field>
+               <field name="arch" type="xml">
+
+                <kanban>
+                 <field name="id"/>
+                 <field name="name"/>
+                 <field name="age"/>
+                 <field name="gender"/>
+                 <field name="note"/>
+                 <templates>
+                 <t t-name="kanban-box">
+                 <div t-attf-class="oe_kanban_global_click">       
+                     <div class="oe_kanban_details">
+                  <ul>
+                     <li>
+                      Name: <filed name="name"/>
+                     </li>
+                     <li>
+                      Age: <filed name="age"/>
+                     </li>
+                      <li>
+                    Gender: <filed name="gender"/>
+                      </li>
+                    </ul>
+                            </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+    
+    
+    
+    
+        <record id="student_tree" model="ir.ui.view">
+            <field name="name">school.student.tree</field>
+            <field name="model">school.student</field>
+            <field name="arch" type="xml">
+                <tree decoration-success="state == 'done'">
+                           <field name="name"/> 
+                           <field name="responsible_id"/>
+                           <field name="age"/>
+                           <field name="gender"/>
+                           <field name="note"/>
+                           <field name="state"
+                         decoration-success="state == 'done'"
+                         decoration-info="state == 'draft'"
+                         decoration-danger="state == 'cancel'"
+                         decoration-warning="state == 'confirm'"/>
+                      
+                </tree>
+            </field>
+        </record>
+
+        <record id="student_form" model="ir.ui.view">
+            <field name="name">school.student.form</field>
+            <field name="model">school.student</field>
+            <field name="arch" type="xml">
+                <form>
+                    
+   <header>  
+      
+    <button id="button_confirm" name="action_confirm" string="confirm" class="btn-primary" state="draft"  confirm="Are you sure that you need to confirm ?" 
+            type="object"/>  
+    <button id="button_done" name="action_done" string="Mark As Done"  state="confirm" class="btn-primary"   type="object"/>
+    <button id="button_draft" name="action_draft" string="Send To Draft" class="btn-primary"  state="cancel"   type="object"/>
+    <button id="button_cancel" name="action_cancel" string="Cancel" class="btn-primary"  state="draft,done,confirm" confirm="Are you sure that you need to cancel ?"  type="object"/>
+
+   <field name="state" widget="statusbar" options="{'clickable': '1'}" sataubar_visible="draft.confirm" />
+                    </header>
+                    <sheet>
+                        <field name="image" widget="image" class="oe_avatar"/>
+                       <div class="oe_title"> 
+                        <lable>
+                            <h1>Profile </h1>
+                        </lable>
+                        </div>
+<!--                            <div class="oe_title"> 
+                            <h2>             
+                                <field name="reference" radonly="1"/>
+                           </h2>
+                        </div> -->
+                        
+                    <group>
+                        <group> 
+                    <field name="name"/>
+                    <field name="teacher_name"/>
+                            
+                            
+                        </group>
+                          <group>
+                              <field name="responsible_id"/>
+
+                      </group>
+                          <group> 
+                              <field name="age"/>
+                      </group>
+                           <group> 
+                               <field name="gender" invisible="context.get('hinde_gende')"/>
+                      </group>
+                        <group>
+                           <field name="note"/>
+                        </group>
+                        </group>
+                    </sheet>
+                    
+                    
+                    
+                    <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+                </form>
+            </field>
+        </record>
+
+    
+    
+
+        <record id="student_search" model="ir.ui.view">
+            <field name="name">school.student.search</field>
+            <field name="model">school.student</field>
+            <field name="arch" type="xml">
+                <search string="student">
+                    <field name="name"/>
+                    <field name="note"/>
+                    <separator/>
+                    <filter string="Male" name="male" domain="[('gender', '=', 'male')]"/> 
+                    <filter string="Female" name="female" domain="[('gender', '=', 'Female')]"/>   
+                    <filter string="Other" name="other" domain="[('gender', '=', 'other')]"/> 
+
+                    <group expand="1" string="Group By">
+                        <filter string="Gender" name="gender" context="{'group_by':'gender'}"/>    
+                        <filter string="Student Name" name="Student_Name" context="{'group_by':'name'}"/>
+                            <filter string="Responsible" name="responsible_id" context="{'group_by':'responsible_id'}"/>
+                   
+                    </group>
+                </search>
+            </field>
+        </record>
+    
+    
+    
+          <record id="student_action" model="ir.actions.act_window">
+            <field name="name">Students</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">school.student</field>
+            <field name="view_mode">tree,kanban,form</field>
+            <field name="context">{'search_default_male': 1, 'search_default_responsible_id': 1}</field>
+              
+          
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a new student?
+                </p>
+            </field>
+        </record>
+
+    
+    
+    
+        <!-- Top menu item -->
+    
+    
+        <menuitem id="school_root"
+            name="School"
+            sequence="10"/>
+
+        <menuitem id="school_student_root"
+            name="School"
+            parent="school_root"
+            sequence="10"/>
+    
+      <menuitem id="school_student"
+            name="Student"
+            parent="school_student_root"
+            action="student_action"
+            sequence="10"/>
+</odoo>
